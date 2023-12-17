@@ -7,6 +7,7 @@ router.post("/create", verifyUser, orderController.createOrder);
 router.get("/:id", verifyUser, orderController.getOrder);
 router.get("/order/:id", verifyUser, orderController.getOrderbyId);
 router.get("/", verifyUser, orderController.getAllOrder);
+router.get("/sales/top", orderController.getAllSoldItem);
 router.put("/:id/placed", verifyUser, orderController.placeOrder);
 router.put("/:id/confirmed", verifyUser, orderController.confirmOrder);
 router.put("/:id/shiped", verifyUser, orderController.shipOrder);

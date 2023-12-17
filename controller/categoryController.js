@@ -1,4 +1,4 @@
-const Category = require("../model/categoryModel");
+
 const Parent = require("../model/parentCategoryModel");
 
 const createParentCategory = async (req, res) => {

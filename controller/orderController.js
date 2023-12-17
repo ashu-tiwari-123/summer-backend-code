@@ -8,7 +8,6 @@ const Razorpay = require("razorpay");
 //   key_secret: process.env.RAZORPAY_SECRET_KEY,
 // });
 
-
 // instance.orders.create(options, function (err, order) {
 //   console.log(order);
 // });
@@ -95,6 +94,29 @@ const getAllOrder = async (req, res) => {
   }
 };
 
+const getAllSoldItem = async (req, res) => {
+  try {
+    const order = await Order.find().populate({
+      path: "orderItems",
+      populate: {
+        path: "product",
+      },
+    });
+    if (!order) {
+      throw new Error("No order Found!");
+    }
+    let product = [];
+    // const product = order.orderItems
+    for (let index = 0; index < order.length; index++) {
+      console.log(order[index].orderItems);
+      product.push(order[index].orderItems);
+    }
+    return res.status(200).send({ message: "Order", product });
+  } catch (error) {
+    return res.status(500).send({ error: error.message });
+  }
+};
+
 //  Admin status updates
 
 const placeOrder = async (req, res) => {
@@ -166,6 +188,7 @@ module.exports = {
   createOrder,
   getOrder,
   getAllOrder,
+  getAllSoldItem,
   placeOrder,
   confirmOrder,
   cancelOrder,

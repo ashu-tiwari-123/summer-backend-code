@@ -1,5 +1,4 @@
 const Product = require("../model/productModel");
-const Category = require("../model/categoryModel");
 const Parent = require("../model/parentCategoryModel");
 
 const createProduct = async (req, res) => {
