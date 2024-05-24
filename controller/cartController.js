@@ -6,6 +6,7 @@ const addToCart = async (req, res) => {
   try {
     let { productId, userId, quantity } = req.body;
     let product = await Product.findById(productId);
+    console.log(product);
     if (!product) {
       throw new Error("Product not found!");
     }
@@ -19,6 +20,7 @@ const addToCart = async (req, res) => {
     let user = await User.findById(userId);
     if (cartItem) {
       cartItem.quantity += quantity;
+      
       if (cartItem.quantity === 0) {
         cart.items.remove(cartItem);
       }

@@ -12,6 +12,7 @@ const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 var bodyParser = require("body-parser");
+const Razorpay = require("razorpay");
 
 //cors
 app.use(cors());
@@ -22,6 +23,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+
+// app.get("/api/getKey", (req, res) => {
+//   res.status(200).json({ message: "Key", key: process.env.RAZORPAY_API_KEY });
+// });
 
 // Routes
 app.use("/api/user/", userRoutes);

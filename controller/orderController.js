@@ -3,14 +3,19 @@ const Cart = require("../model/cartModel");
 const Order = require("../model/orderModel");
 const User = require("../model/userModel");
 const Razorpay = require("razorpay");
-// var instance = new Razorpay({
-//   key_id: process.env.RAZORPAY_KEY_ID,
-//   key_secret: process.env.RAZORPAY_SECRET_KEY,
-// });
 
-// instance.orders.create(options, function (err, order) {
-//   console.log(order);
-// });
+//demo order creation with payment integration
+const instance = new Razorpay({
+  key_id: process.env.RAZORPAY_API_KEY,
+  key_secret: process.env.RAZORPAY_SECRET_KEY,
+});
+const orderCreatePayment = async (req, res) => {
+  const options = {
+    amount: 50000, // amount in the smallest currency unit
+    currency: "INR",
+  };
+  const order = await instance.orders.create(options);
+};
 
 const createOrder = async (req, res) => {
   let id = req.user._id;
@@ -41,11 +46,20 @@ const createOrder = async (req, res) => {
     await order.save();
     await Cart.findByIdAndDelete(cart._id);
     await user.save();
+    // const options = {
+    //   amount: cart.totaldiscountPrice, // amount in the smallest currency unit
+    //   currency: "INR",
+    // };
+    // const orderPay = await instance.orders.create(options);
     return res.status(200).send({ message: "Order", order, success: true });
   } catch (error) {
     return res.status(500).send({ error: error.message });
   }
 };
+
+// const paymentVerification = async = (req,res)=>{
+//   console.log(req.body);
+// }
 
 const getOrder = async (req, res) => {
   const { id } = req.user._id;
@@ -123,7 +137,7 @@ const placeOrder = async (req, res) => {
   const { id } = req.params;
   try {
     const order = await Order.findById(id);
-    order.status = "PLACED";
+    order.status = "Placed";
     await order.save();
     return res.status(200).send({ message: "Order", order });
   } catch (error) {
@@ -134,7 +148,7 @@ const confirmOrder = async (req, res) => {
   const { id } = req.params;
   try {
     const order = await Order.findById(id);
-    order.status = "CONFIRMED";
+    order.status = "Confirmed";
     await order.save();
     return res.status(200).send({ message: "Order", order });
   } catch (error) {
@@ -145,7 +159,7 @@ const shipOrder = async (req, res) => {
   const { id } = req.params;
   try {
     const order = await Order.findById(id);
-    order.status = "SHIPPED";
+    order.status = "Shipped";
     await order.save();
     return res.status(200).send({ message: "Order", order });
   } catch (error) {
@@ -156,7 +170,7 @@ const deliverOrder = async (req, res) => {
   const { id } = req.params;
   try {
     const order = await Order.findById(id);
-    order.status = "DELIVERED";
+    order.status = "Delivered";
     await order.save();
     return res.status(200).send({ message: "Order", order });
   } catch (error) {
@@ -167,7 +181,7 @@ const cancelOrder = async (req, res) => {
   const { id } = req.params;
   try {
     const order = await Order.findById(id);
-    order.status = "CANCELLED";
+    order.status = "Cancelled";
     await order.save();
     return res.status(200).send({ message: "Order", order });
   } catch (error) {
